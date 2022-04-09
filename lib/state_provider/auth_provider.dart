@@ -33,7 +33,6 @@ class AuthProvider extends ChangeNotifier{
     try {
       await auth.signInWithGoogle();
     } on FirebaseAuthException catch (e) {
-
       errorCallback(e);
     }
   }
