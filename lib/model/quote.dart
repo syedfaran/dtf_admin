@@ -19,4 +19,14 @@ class Quote {
       'quote': quote,
     };
   }
+
+  Quote copyWith({
+    String? author,
+    String? quote,
+  }) {
+    return Quote(
+      author: author ?? this.author,
+      quote: quote ?? this.quote,
+    );
+  }
 }
