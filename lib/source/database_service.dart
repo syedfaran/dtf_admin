@@ -41,10 +41,15 @@ class FirestoreService {
   }
 
   Future<List<String>> getSubCategoryList(String id) async {
-    print(id);
     final CollectionReference subCategory = _db.collection('categories');
-    final  querySnapshot =await subCategory.doc(id).collection('subCategories').get();
-    print(querySnapshot.docs.map((e) => e.data()['subCategory']).toList());
+    final querySnapshot =
+        await subCategory.doc(id.trim()).collection('subCategories').get();
+    querySnapshot.docs.map((e) => e.data()['subCategory']).toList();
     return querySnapshot.docs.map<String>((e) => e['subCategory']).toList();
+  }
+
+  Future<void> upLoadQuote(String collection,Map<String,dynamic> map)async{
+    final CollectionReference quoteCategories = _db.collection('quotesCategories');
+    var gg =await quoteCategories.doc('quotes').collection('Alone').add(map);
   }
 }

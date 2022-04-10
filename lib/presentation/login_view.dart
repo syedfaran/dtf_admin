@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: ()async {
-         await FirestoreService().getSubCategoryList('zZck1r3wjuvpin7d48rO');
+
          //context.read<FireStoreProvider>().getListOfMainCategory((e) { });
 
         },
