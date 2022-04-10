@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Quote {
+class QuoteModel {
   final String author;
   final String quote;
 
-  const Quote({required this.author, required this.quote});
+  const QuoteModel({required this.author, required this.quote});
 
-  factory Quote.fromFirestore(QueryDocumentSnapshot json) {
-    return Quote(
+  factory QuoteModel.fromFirestore(QueryDocumentSnapshot json) {
+    return QuoteModel(
       author: json['author'] as String,
       quote: json['quote'] as String,
     );
@@ -20,11 +20,11 @@ class Quote {
     };
   }
 
-  Quote copyWith({
+  QuoteModel copyWith({
     String? author,
     String? quote,
   }) {
-    return Quote(
+    return QuoteModel(
       author: author ?? this.author,
       quote: quote ?? this.quote,
     );

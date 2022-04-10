@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         ],
       ),
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.teal),
+      theme: ThemeData(primarySwatch: Colors.amber),
+
       initialRoute: RouteString.initial,
       onGenerateRoute: RouteGenerator.generateRoute,
       navigatorObservers: const [],

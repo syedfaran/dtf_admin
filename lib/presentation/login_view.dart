@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dtf_web/constants/app_string.dart';
+import 'package:dtf_web/constants/image_string.dart';
 import 'package:dtf_web/presentation/audio_video.dart';
 import 'package:dtf_web/presentation/create_category_subcategory.dart';
 import 'package:dtf_web/presentation/upload_quote.dart';
+import 'package:dtf_web/presentation/widgets/kText.dart';
 import 'package:dtf_web/source/database_service.dart';
 import 'package:dtf_web/state_provider/auth_provider.dart';
 import 'package:dtf_web/state_provider/drawer_provider.dart';
@@ -17,20 +19,18 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     //context.watch<AuthProvider>().loginState==ApplicationLoginState.loggedIn
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()async {
-
-         //context.read<FireStoreProvider>().getListOfMainCategory((e) { });
-
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: ()async {
+      //
+      //    //context.read<FireStoreProvider>().getListOfMainCategory((e) { });
+      //
+      //   },
+      // ),
       drawer: true?Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.teal,
-              ),
+
               child: Text('Drawer Header'),
             ),
             ListTile(
@@ -84,14 +84,29 @@ class _Body extends StatelessWidget {
     switch (provider.loginState) {
       case ApplicationLoginState.loggedIn:
         return Center(
-          child: OutlinedButton(
-              child: const Text('Google'),
-              onPressed: () {
-                provider.signInWithGoogle((e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text(AppString.errorText)));
-                });
-              }),
+          child: InkWell(
+
+            onTap: (){
+              provider.signInWithGoogle((e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text(AppString.errorText)));
+              });
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Image(image: ImageString.google,height: 20),
+                    SizedBox(width: 16.0),
+                    KText(AppString.signInWithGoogle),
+                  ],
+                ),
+              ),
+            ),
+          ),
         );
       case ApplicationLoginState.loggedOut:
         switch (context.watch<DrawerProvider>().enumBody) {
@@ -105,3 +120,6 @@ class _Body extends StatelessWidget {
     }
   }
 }
+
+
+
