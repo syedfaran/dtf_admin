@@ -29,7 +29,7 @@ class FireStoreProvider with ChangeNotifier {
       final querySnapshot = await firestoreService.getListOfMainCategory();
       _mainCategoryList.addAll(querySnapshot.docs
           .map((queryDocumentSnapshot) =>
-          MainCategory.fromFirestore(queryDocumentSnapshot))
+              MainCategory.fromFirestore(queryDocumentSnapshot))
           .toList());
     } on Exception catch (e) {
       errorCallback(e);
@@ -50,8 +50,8 @@ class FireStoreProvider with ChangeNotifier {
       {required String id}) async {
     _subCategoryList.clear();
     try {
-      final List<String> subcategory = await firestoreService
-          .getSubCategoryList(id);
+      final List<String> subcategory =
+          await firestoreService.getSubCategoryList(id);
       _subCategoryList.addAll(subcategory);
     } on Exception catch (e) {
       errorCallback(e);
@@ -63,6 +63,18 @@ class FireStoreProvider with ChangeNotifier {
       {required String collection, required Map<String, dynamic> map}) async {
     try {
       await firestoreService.upLoadQuote(collection, map);
+    } on Exception catch (e) {
+      errorCallback(e);
+    }
+    notifyListeners();
+  }
+
+  Future<void> uploadAudioAndVideo(void Function(Exception e) errorCallback,
+      {required String collection,
+      required String subCollection,
+      required Map<String, dynamic> map}) async {
+    try {
+      await firestoreService.uploadAudioAndVideo(collection, subCollection, map);
     } on Exception catch (e) {
       errorCallback(e);
     }

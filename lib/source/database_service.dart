@@ -50,6 +50,12 @@ class FirestoreService {
 
   Future<void> upLoadQuote(String collection,Map<String,dynamic> map)async{
     final CollectionReference quoteCategories = _db.collection('quotesCategories');
-    var gg =await quoteCategories.doc('quotes').collection('Alone').add(map);
+    await quoteCategories.doc('quotes').collection('Alone').add(map);
+  }
+
+  Future<void> uploadAudioAndVideo(String collection,String subCollection,Map<String,dynamic> map)async{
+    //todo audio/video
+   // final CollectionReference audioSlashVideo = _db.collection('audios');
+   // await audioSlashVideo.doc('1').collection(subCollection).add(map);
   }
 }

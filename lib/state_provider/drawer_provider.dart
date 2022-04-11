@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DrawerProvider with ChangeNotifier {
-  EnumBody _enumBody = EnumBody.categoriesAndSubCategories;
+  EnumBody _enumBody = EnumBody.audioAndVideo;
 
   set enumBody(EnumBody value) {
     _enumBody = value;

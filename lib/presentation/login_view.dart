@@ -26,7 +26,7 @@ class LoginView extends StatelessWidget {
       //
       //   },
       // ),
-      drawer: true?Drawer(
+      drawer: Provider.of<AuthProvider>(context).loginState==ApplicationLoginState.loggedIn?Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
@@ -82,7 +82,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AuthProvider>(context);
     switch (provider.loginState) {
-      case ApplicationLoginState.loggedIn:
+      case ApplicationLoginState.loggedOut:
         return Center(
           child: InkWell(
 
@@ -108,14 +108,14 @@ class _Body extends StatelessWidget {
             ),
           ),
         );
-      case ApplicationLoginState.loggedOut:
+      case ApplicationLoginState.loggedIn:
         switch (context.watch<DrawerProvider>().enumBody) {
           case EnumBody.categoriesAndSubCategories:
             return const CreateCategoryAndSubCategory();
           case EnumBody.uploadQuote:
             return const UploadQuote();
           case EnumBody.audioAndVideo:
-            return const AudioAndVideo();
+            return const AudioAndVideoView();
         }
     }
   }

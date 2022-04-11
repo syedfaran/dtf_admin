@@ -9,7 +9,7 @@ enum ApplicationLoginState { loggedIn, loggedOut }
 class AuthProvider extends ChangeNotifier{
   final Auth auth;
   AuthProvider({required this.auth}){
-    //init();
+    init();
   }
   String? _email;
   String? get email => _email;

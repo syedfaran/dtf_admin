@@ -7,4 +7,9 @@ class AppString{
   static const addQuote ='Add Quote';
   static const authorName ='Author Name';
   static const quote ='Quote';
+  static const image ='image';
+  static const thumbnail ='thumbnail';
+  static const audio ='audio';
+  static const title ='title';
+  static const url ='url';
 }

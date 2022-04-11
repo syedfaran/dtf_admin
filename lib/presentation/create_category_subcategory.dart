@@ -79,11 +79,14 @@ class _CreateCategoryAndSubCategoryState
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              //todo also add Id
                               // await context.read<FireStoreProvider>().addCategory((e) {
-                              //   ScaffoldMessenger.of(context)
-                              //       .showSnackBar(SnackBar(content: Text('Error Data $e')));
                               // }, string: _categoryEditingController.text);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Processing Data')));
                             }
+
                           },
                           child: const Text('Submit'),
                         ),
