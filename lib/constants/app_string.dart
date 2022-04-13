@@ -13,4 +13,5 @@ class AppString{
   static const video ='video';
   static const title ='title';
   static const url ='url';
+  static const submit ='submit';
 }

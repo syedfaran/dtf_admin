@@ -15,9 +15,9 @@ class FireStoreProvider with ChangeNotifier {
   List<MainCategory> get mainCategoryList => _mainCategoryList;
 
   Future<void> addCategory(void Function(Exception e) errorCallback,
-      {required String string}) async {
+      {required String string,required String id}) async {
     try {
-      await firestoreService.addCategory(string);
+      await firestoreService.addCategory(string,id);
     } on Exception catch (e) {
       errorCallback(e);
     }
@@ -73,6 +73,9 @@ class FireStoreProvider with ChangeNotifier {
       {required String collection,
       required String subCollection,
       required Map<String, dynamic> map}) async {
+
+
+
     try {
       await firestoreService.uploadAudioAndVideo(collection, subCollection, map);
     } on Exception catch (e) {

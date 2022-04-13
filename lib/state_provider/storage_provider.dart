@@ -2,29 +2,37 @@ import 'package:dtf_web/source/storage_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+
 class StorageProvider with ChangeNotifier {
   final StorageService storageService;
 
   StorageProvider({required this.storageService});
 
-  PlatformFile? _pickedAudioOrVideo;
+  PlatformFile? _pickedAudio;
   PlatformFile? _pickedImage;
-  PlatformFile? get pickedAudioOrVideo => _pickedAudioOrVideo;
+  String? _imageUrl;
+  String? _audioUrl;
+  PlatformFile? get pickedAudio => _pickedAudio;
   PlatformFile? get pickedImage => _pickedImage;
 
+
+  String? get audioUrl => _audioUrl;
+  String? get imageUrl => _imageUrl;
+
   static List<String> get storageAudioPath => [
-    'Hot10_Audio',
-    'MyCollection_Audio',
-    'TopFavourite_Audio',
-    'Trending_Audio'
-  ];
+        'Hot10_Audio',
+        'MyCollection_Audio',
+        'Top Favourite_Audio',
+        'Trending_Audio'
+      ];
 
   static List<String> get storageVideoPath => [
-    'Hot10_Video',
-    'MyCollection_Video',
-    'TopFavourite_Video',
-    'Trending_Video'
-  ];
+        'Hot10_Video',
+        'MyCollection_Video',
+        'Top Favourite_Video',
+        'Trending_Video'
+      ];
+
   Future<PlatformFile?> _selectFile() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return null;
@@ -38,40 +46,75 @@ class StorageProvider with ChangeNotifier {
     return file;
   }
 
-  Future<void> selectImage(void Function(Failure e) errorCallback,TextEditingController string) async {
+  Future<void> selectImage(void Function(Failure e) errorCallback,
+      TextEditingController string) async {
     _pickedImage = await _selectFile();
     if (_pickedImage == null) {
+      string.text = '';
       errorCallback(const Failure('No Image Selected'));
-      return;
-   //   throw const ImageException('No Image Selected');
-    }
-    string.text = _pickedImage!.name;
-    notifyListeners();
-  }
-
-  Future<void> selectAudioOrVideo(void Function(Failure e) errorCallback,TextEditingController string) async {
-    _pickedImage = await _selectFile();
-    if (_pickedImage == null) {
-      errorCallback(const Failure('No audio or Video Selected'));
       return;
       //   throw const ImageException('No Image Selected');
     }
     string.text = _pickedImage!.name;
     notifyListeners();
   }
-  Future<void> uploadImage()async{
-    try{
-      await storageService.upLoadImage(_pickedImage!);
+
+  Future<void> unSelectImage({required TextEditingController string}) async {
+    _pickedImage = null;
+    string.text = '';
+    notifyListeners();
+  }
+
+  Future<void> upLoadImage(void Function(Failure e) errorCallback,
+      {required int index, required bool isAudioSelected}) async {
+    final String destination =
+        isAudioSelected ? storageAudioPath[index] : storageVideoPath[index];
+
+    try {
+      _imageUrl =  await storageService.upLoadToFireStorage(_pickedImage!,destination: destination);
     } on firebase_core.FirebaseException catch (e) {
-      print(e);
+      Failure(e.message!);
       // ...
     }
   }
+
+  Future<void> selectAudio(void Function(Failure e) errorCallback,
+      TextEditingController string) async {
+    _pickedAudio = await _selectFile();
+    if (_pickedAudio == null) {
+      string.text = '';
+      errorCallback(const Failure('No audio or Video Selected'));
+      return;
+      //   throw const ImageException('No Image Selected');
+    }
+    string.text = _pickedAudio!.name;
+    notifyListeners();
+  }
+
+  Future<void> unSelectAudio({required TextEditingController string}) async {
+    _pickedAudio = null;
+    string.text = '';
+    notifyListeners();
+  }
+
+  Future<void> upLoadAudio(void Function(Failure e) errorCallback,
+      {required int index, required bool isAudioSelected}) async {
+    final String destination =
+        isAudioSelected ? storageAudioPath[index] : storageVideoPath[index];
+    try {
+      //todo upload with destination
+      _audioUrl =  await storageService.upLoadToFireStorage(_pickedAudio!,destination: destination);
+    } on firebase_core.FirebaseException catch (e) {
+      Failure(e.message!);
+      // ...
+    }
+  }
+
+
 }
 
 class Failure implements Exception {
   final String message;
+
   const Failure(this.message);
 }
-
-

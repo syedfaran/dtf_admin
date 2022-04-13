@@ -1,30 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
-
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<void> foo() async {
-    final result = await _db
-        .collection('quotesCategories')
-        .doc('quotes')
-        .collection('Alone')
-        .get();
-    final resultTwo = await _db.collection('categories').get();
-    final resultThree = await _db
-        .collection('categories')
-        .doc('lHqlNzYEkgiLUIsy5RLB')
-        .collection('subCategories')
-        .get();
-
-    resultTwo.docs.map((e) => print(e.data()['mainCategory'])).toList();
-
-    // result.docs.map((e) => print(e.data()['author'])).toList();
-  }
-
-  Future<void> addCategory(String string) async {
+  Future<void> addCategory(String string, String id) async {
     final CollectionReference category = _db.collection('categories');
-    await category.add({'mainCategory': string});
+    await category.add({'mainCategory': string, 'mainCategoryId': id});
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getListOfMainCategory() async {
@@ -48,14 +29,16 @@ class FirestoreService {
     return querySnapshot.docs.map<String>((e) => e['subCategory']).toList();
   }
 
-  Future<void> upLoadQuote(String collection,Map<String,dynamic> map)async{
-    final CollectionReference quoteCategories = _db.collection('quotesCategories');
+  Future<void> upLoadQuote(String collection, Map<String, dynamic> map) async {
+    final CollectionReference quoteCategories =
+        _db.collection('quotesCategories');
     await quoteCategories.doc('quotes').collection('Alone').add(map);
   }
 
-  Future<void> uploadAudioAndVideo(String collection,String subCollection,Map<String,dynamic> map)async{
+  Future<void> uploadAudioAndVideo(
+      String collection, String subCollection, Map<String, dynamic> map) async {
     //todo audio/video
-   // final CollectionReference audioSlashVideo = _db.collection('audios');
-   // await audioSlashVideo.doc('1').collection(subCollection).add(map);
+     final CollectionReference audioSlashVideo = _db.collection(collection);
+     await audioSlashVideo.doc('1').collection(subCollection).add(map);
   }
 }
