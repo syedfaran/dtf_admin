@@ -10,6 +10,7 @@ class AppString{
   static const image ='image';
   static const thumbnail ='thumbnail';
   static const audio ='audio';
+  static const video ='video';
   static const title ='title';
   static const url ='url';
 }
