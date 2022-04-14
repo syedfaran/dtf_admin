@@ -17,6 +17,11 @@ class StorageProvider with ChangeNotifier {
 
 
   String? get audioUrl => _audioUrl;
+
+  set audioUrl(String? value) {
+    _audioUrl = value;
+  }
+
   String? get imageUrl => _imageUrl;
 
   static List<String> get storageAudioPath => [

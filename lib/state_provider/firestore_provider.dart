@@ -61,8 +61,9 @@ class FireStoreProvider with ChangeNotifier {
 
   Future<void> upLoadQuote(void Function(Exception e) errorCallback,
       {required String collection, required Map<String, dynamic> map}) async {
+
     try {
-      await firestoreService.upLoadQuote(collection, map);
+     await firestoreService.upLoadQuote(collection, map);
     } on Exception catch (e) {
       errorCallback(e);
     }
@@ -73,8 +74,6 @@ class FireStoreProvider with ChangeNotifier {
       {required String collection,
       required String subCollection,
       required Map<String, dynamic> map}) async {
-
-
 
     try {
       await firestoreService.uploadAudioAndVideo(collection, subCollection, map);

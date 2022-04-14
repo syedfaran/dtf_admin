@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:dtf_web/constants/app_string.dart';
@@ -20,8 +19,7 @@ class AudioAndVideoView extends StatefulWidget {
 class _AudioAndVideoViewState extends State<AudioAndVideoView> {
   final _formKey = GlobalKey<FormState>();
 
-  InputDecoration kInputDecoration(String hintText) =>
-      InputDecoration(
+  InputDecoration kInputDecoration(String hintText) => InputDecoration(
         filled: true,
         hintText: hintText,
         fillColor: Colors.grey[200],
@@ -40,16 +38,14 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
 
   ValueNotifier<String> collectionNotifier = ValueNotifier('');
 
-  static List<String> get collectionAudioList =>
-      [
+  static List<String> get collectionAudioList => [
         'hot10_audio',
         'myCollection_audio',
         'topFavourite_audio',
         'trending_audio'
       ];
 
-  static List<String> get collectionVideoList =>
-      [
+  static List<String> get collectionVideoList => [
         'hot10_video',
         'myCollection_video',
         'topFavourite_video',
@@ -63,7 +59,7 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
   ///----------------------------
 
   final ValueNotifier<EnumVideoAudio> audioOrVideoNotifier =
-  ValueNotifier(EnumVideoAudio.Audios);
+      ValueNotifier(EnumVideoAudio.Audios);
 
   ///--------------
   int? trackIndex;
@@ -89,6 +85,12 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                             collectionNotifier = ValueNotifier('');
                             audioOrVideoNotifier.value = EnumVideoAudio.Audios;
                             trackIndex = null;
+                            context
+                                .read<StorageProvider>()
+                                .unSelectAudio(string: _audioEditing);
+                            context
+                                .read<StorageProvider>()
+                                .unSelectImage(string: _imageEditing);
                           },
                           videoAudio: EnumVideoAudio.Audios),
                       const SizedBox(width: 16.0),
@@ -99,6 +101,12 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                             collectionNotifier = ValueNotifier('');
                             audioOrVideoNotifier.value = EnumVideoAudio.Videos;
                             trackIndex = null;
+                            context
+                                .read<StorageProvider>()
+                                .unSelectAudio(string: _audioEditing);
+                            context
+                                .read<StorageProvider>()
+                                .unSelectImage(string: _imageEditing);
                           },
                           videoAudio: EnumVideoAudio.Videos),
                     ],
@@ -110,50 +118,47 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                   builder: (_, parent, child) {
                     return ValueListenableBuilder<String>(
                       valueListenable: collectionNotifier,
-                      builder: (__, value, child) =>
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: InputDecorator(
-                              decoration: kInputDecoration('Select Collection'),
-                              isEmpty: value.isEmpty,
-                              child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    focusColor: Colors.transparent,
-                                    value: value.isEmpty ? null : value,
-                                    isDense: true,
-                                    items: parent == EnumVideoAudio.Audios
-                                        ? collectionAudioList
-                                        .asMap()
-                                        .map((i, element) =>
-                                        MapEntry(
-                                            i,
-                                            DropdownMenuItem<String>(
-                                                onTap: () {
-                                                  trackIndex = i;
-                                                },
-                                                child: KText(element),
-                                                value: element)))
-                                        .values
-                                        .toList()
-                                        : collectionVideoList
-                                        .asMap()
-                                        .map((i, element) =>
-                                        MapEntry(
-                                            i,
-                                            DropdownMenuItem<String>(
-                                                onTap: () {
-                                                  trackIndex = i;
-                                                },
-                                                child: KText(element),
-                                                value: element)))
-                                        .values
-                                        .toList(),
-                                    onChanged: (val) async {
-                                      collectionNotifier.value = val!;
-                                    },
-                                  )),
-                            ),
-                          ),
+                      builder: (__, value, child) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: InputDecorator(
+                          decoration: kInputDecoration('Select Collection'),
+                          isEmpty: value.isEmpty,
+                          child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                            focusColor: Colors.transparent,
+                            value: value.isEmpty ? null : value,
+                            isDense: true,
+                            items: parent == EnumVideoAudio.Audios
+                                ? collectionAudioList
+                                    .asMap()
+                                    .map((i, element) => MapEntry(
+                                        i,
+                                        DropdownMenuItem<String>(
+                                            onTap: () {
+                                              trackIndex = i;
+                                            },
+                                            child: KText(element),
+                                            value: element)))
+                                    .values
+                                    .toList()
+                                : collectionVideoList
+                                    .asMap()
+                                    .map((i, element) => MapEntry(
+                                        i,
+                                        DropdownMenuItem<String>(
+                                            onTap: () {
+                                              trackIndex = i;
+                                            },
+                                            child: KText(element),
+                                            value: element)))
+                                    .values
+                                    .toList(),
+                            onChanged: (val) async {
+                              collectionNotifier.value = val!;
+                            },
+                          )),
+                        ),
+                      ),
                     );
                   }),
               const SizedBox(height: 26.0),
@@ -162,7 +167,6 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     ///image
                     TextFormField(
                         decoration: kInputDecoration(AppString.image),
@@ -173,10 +177,10 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                         OutlinedButton(
                             onPressed: () async {
                               await context.read<StorageProvider>().selectImage(
-                                      (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text(e.message)));
-                                  }, _imageEditing);
+                                  (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.message)));
+                              }, _imageEditing);
                             },
                             child: const KText('select Image')),
                         // OutlinedButton(
@@ -210,50 +214,61 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                         controller: _titleEditing,
                         validator: kValidator),
                     const SizedBox(height: 26.0),
-                    TextFormField(
-                        decoration: kInputDecoration(AppString.url),
-                        controller: _audioEditing,
-                        validator: kValidator),
+                    ValueListenableBuilder<EnumVideoAudio>(
+                      valueListenable: audioOrVideoNotifier,
+                      builder: (_, value, child) {
+                        return TextFormField(
+                            decoration: kInputDecoration(
+                                value == EnumVideoAudio.Audios
+                                    ? AppString.audio
+                                    : AppString.url),
+                            onChanged: value == EnumVideoAudio.Videos?(value){
+                              context.read<StorageProvider>().audioUrl=value;
+                            }:null,
+                            controller: _audioEditing,
+                            validator: kValidator);
+                      },
+                    ),
                     ValueListenableBuilder<EnumVideoAudio>(
                         valueListenable: audioOrVideoNotifier,
                         builder: (_, value, child) {
                           return value == EnumVideoAudio.Audios
                               ? Row(
-                            children: [
-                              OutlinedButton(
-                                  onPressed: () async {
-                                    await context
-                                        .read<StorageProvider>()
-                                        .selectAudio((e) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                          content: Text(e.message)));
-                                    }, _audioEditing);
-                                  },
-                                  child: const KText('select Audio')),
-                              // OutlinedButton(
-                              //     onPressed: () {
-                              //       context
-                              //           .read<StorageProvider>()
-                              //           .upLoadAudio((failure) {},
-                              //           index: trackIndex!,
-                              //           isAudioSelected:
-                              //           audioOrVideoNotifier
-                              //               .value ==
-                              //               EnumVideoAudio
-                              //                   .Audios);
-                              //     },
-                              //     child: KText('upload')),
-                              OutlinedButton(
-                                  onPressed: () {
-                                    context
-                                        .read<StorageProvider>()
-                                        .unSelectImage(
-                                        string: _audioEditing);
-                                  },
-                                  child: KText('unSelect Audio')),
-                            ],
-                          )
+                                  children: [
+                                    OutlinedButton(
+                                        onPressed: () async {
+                                          await context
+                                              .read<StorageProvider>()
+                                              .selectAudio((e) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(e.message)));
+                                          }, _audioEditing);
+                                        },
+                                        child: const KText('select Audio')),
+                                    // OutlinedButton(
+                                    //     onPressed: () {
+                                    //       context
+                                    //           .read<StorageProvider>()
+                                    //           .upLoadAudio((failure) {},
+                                    //           index: trackIndex!,
+                                    //           isAudioSelected:
+                                    //           audioOrVideoNotifier
+                                    //               .value ==
+                                    //               EnumVideoAudio
+                                    //                   .Audios);
+                                    //     },
+                                    //     child: KText('upload')),
+                                    OutlinedButton(
+                                        onPressed: () {
+                                          context
+                                              .read<StorageProvider>()
+                                              .unSelectImage(
+                                                  string: _audioEditing);
+                                        },
+                                        child: KText('unSelect Audio')),
+                                  ],
+                                )
                               : const SizedBox.shrink();
                         }),
                     Center(
@@ -267,38 +282,47 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content:
-                                        KText('on Collection Selected')));
+                                            KText('on Collection Selected')));
                                 return;
                               } else {
-                                await Future.wait([
-                                  storagePro.upLoadImage((e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content:
-                                            Text(e.message)));
-                                  },
-                                      index: trackIndex!,
-                                      isAudioSelected:
-                                      audioOrVideoNotifier.value ==
-                                          EnumVideoAudio.Audios),
-                                  storagePro.upLoadAudio((e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content:
-                                            Text(e.message)));
-                                  },
-                                      index: trackIndex!,
-                                      isAudioSelected:
-                                      audioOrVideoNotifier.value ==
-                                          EnumVideoAudio.Audios),
-                                ]);
-                                if (storagePro.audioUrl == null || storagePro.imageUrl == null) {
+                                audioOrVideoNotifier.value ==
+                                        EnumVideoAudio.Audios
+                                    ? await Future.wait([
+                                        storagePro.upLoadImage((e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(e.message)));
+                                        },
+                                            index: trackIndex!,
+                                            isAudioSelected:
+                                                audioOrVideoNotifier.value ==
+                                                    EnumVideoAudio.Audios),
+                                        storagePro.upLoadAudio((e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(e.message)));
+                                        },
+                                            index: trackIndex!,
+                                            isAudioSelected:
+                                                audioOrVideoNotifier.value ==
+                                                    EnumVideoAudio.Audios),
+                                      ])
+                                    : await storagePro.upLoadImage((e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(e.message)));
+                                      },
+                                        index: trackIndex!,
+                                        isAudioSelected:
+                                            audioOrVideoNotifier.value ==
+                                                EnumVideoAudio.Audios);
+                                if (storagePro.audioUrl == null ||
+                                    storagePro.imageUrl == null) {
                                   print(storagePro.audioUrl);
                                   print(storagePro.imageUrl);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          content:
-                                          KText(
+                                          content: KText(
                                               'Audio Or Video Link not Generated')));
                                   return;
                                 } else {
@@ -308,17 +332,22 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                                       title: _titleEditing.text,
                                       url: storagePro.audioUrl!);
 
-                                  context.read<FireStoreProvider>()
+                                  context
+                                      .read<FireStoreProvider>()
                                       .uploadAudioAndVideo((e) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Processing Data Interrupted')),
-                                    );
-                                  }, collection:audioOrVideoNotifier.value.name,
-                                      map:audioVideoObj.toMap(), subCollection:collectionNotifier.value);
+                                        const SnackBar(
+                                            content: Text(
+                                                'Processing Data Interrupted')));
+                                    return;
+                                  },
+                                          collection:
+                                              audioOrVideoNotifier.value.name,
+                                          map: audioVideoObj.toMap(),
+                                          subCollection:
+                                              collectionNotifier.value);
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('data added')),
+                                    const SnackBar(content: Text('data added')),
                                   );
                                 }
                               }
@@ -346,11 +375,12 @@ class _Box extends StatefulWidget {
 
   final void Function() onTapped;
 
-  const _Box({Key? key,
-    required this.isSelected,
-    required this.string,
-    required this.onTapped,
-    required this.videoAudio})
+  const _Box(
+      {Key? key,
+      required this.isSelected,
+      required this.string,
+      required this.onTapped,
+      required this.videoAudio})
       : super(key: key);
 
   @override

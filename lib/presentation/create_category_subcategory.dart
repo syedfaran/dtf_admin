@@ -83,14 +83,16 @@ class _CreateCategoryAndSubCategoryState
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 //todo also add Id
-                                // await context
-                                //     .read<FireStoreProvider>()
-                                //     .addCategory((e) {},
-                                //         string: _categoryEditingController.text,
-                                //         id: uuid.v4());
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Processing Data')));
+                                await context
+                                    .read<FireStoreProvider>()
+                                    .addCategory((e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Something Went Wrong')));
+                                },
+                                        string: _categoryEditingController.text,
+                                        id: uuid.v4());
+
                               }
                             },
                             child: const Text('Submit'),
@@ -172,21 +174,16 @@ class _CreateCategoryAndSubCategoryState
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16.0),
                                 child: ElevatedButton(
-                                  onPressed: !(value.mainCategory.isEmpty &&
-                                          value.mainCategory.isEmpty)
+                                  onPressed: !(value.mainCategory.isEmpty ||
+                                          value.categoryId.isEmpty)
                                       ? () async {
-                                          if (_formKeyTwo.currentState!
-                                              .validate()) {
-                                            // await context.read<FireStoreProvider>().addSubCategory((e) {
-                                            //   ScaffoldMessenger.of(context)
-                                            //       .showSnackBar(SnackBar(content: Text('Error Data $e')));
-                                            // },
-                                            //     string: _subCategoryEditingController.text,
-                                            //     id: mainCategoryNotifier.value.categoryId);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                                    content: Text(
-                                                        'Processing Data')));
+                                          if (_formKeyTwo.currentState!.validate()) {
+                                            await context.read<FireStoreProvider>().addSubCategory((e) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(content: Text('Error Data $e')));
+                                            },
+                                                string: _subCategoryEditingController.text,
+                                                id: mainCategoryNotifier.value.categoryId);
                                           }
                                         }
                                       : null,

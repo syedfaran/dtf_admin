@@ -69,7 +69,9 @@ class _UploadQuoteState extends State<UploadQuote> {
                         mainCategoryNotifier.value = val!;
                         await context
                             .read<FireStoreProvider>()
-                            .getSubCategoryList((e) {}, id: val.categoryId);
+                            .getSubCategoryList((e) {
+                          print(e);
+                        }, id: val.categoryId);
                       },
                     )),
                   ),
@@ -104,6 +106,7 @@ class _UploadQuoteState extends State<UploadQuote> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     ///author
                     TextFormField(
                       controller: authorEditController,
@@ -153,22 +156,30 @@ class _UploadQuoteState extends State<UploadQuote> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: ElevatedButton(
-                              onPressed: !(value.mainCategory.isEmpty&&value.mainCategory.isEmpty)?() {
-                                final quoteModel = QuoteModel(author: authorEditController.text, quote: quoteEditController.text);
+                              onPressed: !(value.mainCategory.isEmpty &&
+                                      value.mainCategory.isEmpty)
+                                  ? () {
+                                      final quoteModel = QuoteModel(
+                                          author: authorEditController.text,
+                                          quote: quoteEditController.text);
 
-                                if (_formKey.currentState!.validate()) {
-                                  // context.read<FireStoreProvider>().upLoadQuote(
-                                  //     (e) {},
-                                  //     collection: context
-                                  //         .read<FireStoreProvider>()
-                                  //         .subCategoryList[trackIndex],
-                                  //     map: quoteModel.toMap());
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Processing Data')),
-                                  );
-                                }
-                              }:null,
+                                      if (_formKey.currentState!.validate()) {
+                                        context
+                                            .read<FireStoreProvider>()
+                                            .upLoadQuote((e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text('Error Data')),
+                                          );
+                                        },
+                                                collection: context
+                                                    .read<FireStoreProvider>()
+                                                    .subCategoryList[trackIndex],
+                                                map: quoteModel.toMap());
+                                      }
+                                    }
+                                  : null,
                               child: const Text('Submit'),
                             ),
                           ),
@@ -185,4 +196,3 @@ class _UploadQuoteState extends State<UploadQuote> {
     );
   }
 }
-
