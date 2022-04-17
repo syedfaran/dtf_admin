@@ -27,7 +27,7 @@ class _CreateCategoryAndSubCategoryState
   void initState() {
     _categoryEditingController = TextEditingController();
     _subCategoryEditingController = TextEditingController();
-    context.read<FireStoreProvider>().getListOfMainCategory((e) {});
+    //context.read<FireStoreProvider>().getListOfMainCategory((e) {});
     super.initState();
   }
 

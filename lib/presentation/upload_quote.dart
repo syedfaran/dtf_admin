@@ -4,6 +4,7 @@ import 'package:dtf_web/model/quote.dart';
 import 'package:dtf_web/presentation/widgets/kText.dart';
 import 'package:dtf_web/state_provider/firestore_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class UploadQuote extends StatefulWidget {
@@ -23,8 +24,23 @@ class _UploadQuoteState extends State<UploadQuote> {
 
   @override
   void initState() {
-    context.read<FireStoreProvider>().getListOfMainCategory((e) {});
+    // SchedulerBinding.instance!.addPostFrameCallback((_){
+    //   context.read<FireStoreProvider>().getListOfMainCategory((e) {});
+    //   // Add Your Code here.
+    //
+    // });
+
+
     super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    SchedulerBinding.instance!.addPostFrameCallback((_){
+      //  context.read<FireStoreProvider>().getListOfMainCategory((e) {});
+       // Add Your Code here.
+
+       });
+    super.didChangeDependencies();
   }
 
   @override
@@ -101,7 +117,8 @@ class _UploadQuoteState extends State<UploadQuote> {
                       .toList(),
                 ),
               ),
-              Form(
+              context.watch<FireStoreProvider>().subCategoryList.isNotEmpty?
+                Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +205,7 @@ class _UploadQuoteState extends State<UploadQuote> {
                     ),
                   ],
                 ),
-              ),
+              ):const KText('No SubCategory found'),
             ],
           ),
         ),
