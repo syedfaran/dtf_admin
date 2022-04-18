@@ -60,6 +60,8 @@ class LoginView extends StatelessWidget {
             ListTile(
               title: const Text('LogOut'),
               onTap: () {
+
+                context.read<AuthProvider>().signOut();
                 // Update the state of the app
                 // ...
                 // Then close the drawer
