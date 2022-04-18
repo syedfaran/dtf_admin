@@ -63,7 +63,7 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
 
   ///--------------
   int? trackIndex;
-
+  WhyFarther _selection = WhyFarther.freemium;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -78,8 +78,7 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                 builder: (_, value, child) {
                   return Row(
                     children: [
-                      _Box(
-                          isSelected: value,
+                      _Box(isSelected: value,
                           string: AppString.audio,
                           onTapped: () {
                             collectionNotifier = ValueNotifier('');
@@ -109,6 +108,21 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                                 .unSelectImage(string: _imageEditing);
                           },
                           videoAudio: EnumVideoAudio.Videos),
+                      const Spacer(),
+                      KText(_selection.name),
+                      PopupMenuButton<WhyFarther>(
+                        onSelected: (WhyFarther result) { setState(() { _selection = result; }); },
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+                          const PopupMenuItem<WhyFarther>(
+                            value: WhyFarther.freemium,
+                            child: Text('Freemium'),
+                          ),
+                          const PopupMenuItem<WhyFarther>(
+                            value: WhyFarther.premium,
+                            child: Text('Premium'),
+                          ),
+                        ],
+                      )
                     ],
                   );
                 },
@@ -330,7 +344,9 @@ class _AudioAndVideoViewState extends State<AudioAndVideoView> {
                                       image: storagePro.imageUrl!,
                                       thumbnail: _thumbnailEditing.text,
                                       title: _titleEditing.text,
-                                      url: storagePro.audioUrl!);
+                                      url: storagePro.audioUrl!,
+                                    isFreemium:WhyFarther.freemium==_selection
+                                  );
 
                                   context
                                       .read<FireStoreProvider>()
@@ -426,3 +442,5 @@ class _BoxState extends State<_Box> {
 }
 
 enum EnumVideoAudio { Audios, Videos }
+
+enum WhyFarther {freemium,premium}

@@ -3,11 +3,13 @@ class AudioVideo {
   final String thumbnail;
   final String url;
   final String title;
+  final bool isFreemium;
 
   const AudioVideo(
       {required this.image,
       required this.thumbnail,
       required this.title,
+      required this.isFreemium,
       required this.url});
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class AudioVideo {
       'thumbnail': thumbnail,
       'url': url,
       'title': title,
+      'isFreemium':isFreemium
     };
   }
 
@@ -25,6 +28,7 @@ class AudioVideo {
       thumbnail: map['thumbnail'] as String,
       url: map['url'] as String,
       title: map['title'] as String,
+      isFreemium: map['isFreemium'] as bool,
     );
   }
 
@@ -33,12 +37,14 @@ class AudioVideo {
     String? thumbnail,
     String? url,
     String? title,
+    bool? isFreemium
   }) {
     return AudioVideo(
       image: image ?? this.image,
       thumbnail: thumbnail ?? this.thumbnail,
       url: url ?? this.url,
       title: title ?? this.title,
+      isFreemium: isFreemium??this.isFreemium
     );
   }
 }
