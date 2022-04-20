@@ -12,6 +12,12 @@ class QuoteModel {
       quote: json['quote'] as String,
     );
   }
+  factory QuoteModel.fromJson(Map json) {
+    return QuoteModel(
+      author: json['author'] as String,
+      quote: json['quote'] as String,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {

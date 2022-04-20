@@ -14,4 +14,5 @@ class AppString{
   static const title ='title';
   static const url ='url';
   static const submit ='submit';
+  static const jsonFile ='Json File';
 }

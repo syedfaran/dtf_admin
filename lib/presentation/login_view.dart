@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dtf_web/constants/app_string.dart';
 import 'package:dtf_web/constants/image_string.dart';
@@ -29,9 +30,27 @@ class LoginView extends StatelessWidget {
       drawer: Provider.of<AuthProvider>(context).loginState==ApplicationLoginState.loggedIn?Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
-
-              child: Text('Drawer Header'),
+             DrawerHeader(
+               decoration: BoxDecoration(
+                 gradient: LinearGradient(
+                   begin: Alignment.bottomCenter,
+                   end: Alignment.topCenter,
+                   colors: [Colors.amber[50]!,Colors.white]
+                 )
+               ),
+             // child: Text('Day To Fortune\n\nAdmin',textAlign: TextAlign.center,),
+              child:   DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    FadeAnimatedText('Day To Fortune'),
+                    FadeAnimatedText('Admin'),
+                  ],
+                ),
+              ),
             ),
             ListTile(
               title: const Text('Add Category/SubCategory'),
